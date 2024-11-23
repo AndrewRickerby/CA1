@@ -1,17 +1,25 @@
+/*
+* AlgoCA1 :
+* Andrew Rickerby :
+* C23344333 :
+* Description of class :
+*/
+
+
 package application;
 
-public class Module {
+public class Employee {
     private String name;
     private String code;
     private String course;
 
-    public Module() {
+    public Employee() {
         this.name = "";
         this.code = "";
         this.course = "";
     }
 
-    public Module(String name, String code, String course) {
+    public Employee(String name, String code, String course) {
         this.name = name;
         this.code = code;
         this.course = course;
