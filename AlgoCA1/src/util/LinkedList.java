@@ -1,3 +1,13 @@
+/*
+* AlgoCA1 :
+* Andrew Rickerby :
+* C23344333 :
+* Description of class :
+*/
+
+
+
+
 package util;
 
 public class LinkedList<T> implements LinkedListADT<T> {
@@ -14,6 +24,24 @@ public class LinkedList<T> implements LinkedListADT<T> {
 
     public LinearNode<T> getFront() {
         return front;
+    }
+    
+
+    public void setFront(LinearNode<T> newFront) {
+        front = newFront;
+        if (front == null) {
+            last = null;  
+        }
+    }
+
+
+    public void setLast(LinearNode<T> newLast) {
+        last = newLast;
+        if (last == null) {
+            front = null;  
+        } else {
+            last.setNext(null);  
+        }
     }
 
     public void add(T element) {
