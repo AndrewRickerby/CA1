@@ -2,7 +2,7 @@
 * AlgoCA1 :
 * Andrew Rickerby :
 * C23344333 :
-* Description of class :
+* Description of class :the blueprint for the linked list, including for adding, removing, accessing, checking, and representing elements.
 */
 
 
