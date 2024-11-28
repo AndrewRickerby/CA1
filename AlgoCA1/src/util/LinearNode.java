@@ -2,7 +2,7 @@
 * AlgoCA1 :
 * Andrew Rickerby :
 * C23344333 :
-* Description of class :
+* Description of class : class represents a linked list, storing an element of generic type T
 */  
 
     package util;
