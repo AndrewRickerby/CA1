@@ -2,7 +2,7 @@
 * AlgoCA1 :
 * Andrew Rickerby :
 * C23344333 :
-* Description of class :
+* Description of class : this class allows s to traverse the list
 */
 
 
@@ -11,15 +11,18 @@
 package util;
 
 public class LinkedList<T> implements LinkedListADT<T> {
-
+	
     private int count;
     private LinearNode<T> front;
     private LinearNode<T> last;
+    
+
 
     public LinkedList() {
         count = 0;
         front = null;
         last = null;
+        this.count = 0;
     }
 
     public LinearNode<T> getFront() {
@@ -77,7 +80,34 @@ public class LinkedList<T> implements LinkedListADT<T> {
         }
         count++;
     }
+    public void addAt(int index, T element) {
+        if (index < 0 || index > count) {
+            throw new IndexOutOfBoundsException("Invalid index");
+        }
 
+        LinearNode<T> newNode = new LinearNode<>(element);
+
+        if (index == 0) {
+            newNode.setNext(front);
+            front = newNode;
+            if (last == null) {
+                last = newNode;
+            }
+        } else {
+            LinearNode<T> current = front;
+            for (int i = 0; i < index - 1; i++) {
+                current = current.getNext();
+            }
+            newNode.setNext(current.getNext());
+            current.setNext(newNode);
+
+            if (newNode.getNext() == null) {
+                last = newNode;
+            }
+        }
+
+        count++;
+    }
     public T remove() {
         if (isEmpty()) {
             System.out.println("The list is empty.");
@@ -118,6 +148,23 @@ public class LinkedList<T> implements LinkedListADT<T> {
         }
         return false;
     }
+    
+    public void reverse() {
+        LinearNode<T> previous = null;
+        LinearNode<T> current = front;
+        LinearNode<T> next = null;
+
+        last = front; 
+        while (current != null) {
+            next = current.getNext(); 
+            current.setNext(previous); 
+            previous = current; 
+            current = next; 
+        }
+
+        front = previous; 
+    }
+
 
     @Override
     public String toString() {
