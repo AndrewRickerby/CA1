@@ -2,12 +2,12 @@
 * AlgoCA1 :
 * Andrew Rickerby :
 * C23344333 :
-* Description of class :
+* Description of class : main class allowing users to add, remove, search, display, and reverse employee records through the menu.
 */
 
 
 package application;
-
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import util.LinearNode;
@@ -35,42 +35,65 @@ public class TrainingCourses
     {
         Employee m; 
         String name, code;
-        String course;
         Scanner scan = new Scanner(System.in);
-        System.out.print("\nHow many Employees do you want to enter ");
-        int n = scan.nextInt();
+        String course;
+        int n = 11;
+        while (n>10){
+        try {
+	        
+		        System.out.print("\nHow many Employees do you want to enter(1-10): ");
+		         n = scan.nextInt();
+		        scan.nextLine(); 
+		   }
         
-        
-        for (int i = 1; i <= n; ++i) {
-        
-        for (int count=1; count <=3; count++)
-        {
-            System.out.print("\nEnter name of the Employee  " + count + " : ");
-            name = scan.nextLine();
-            System.out.print("Enter Employee code for " + count + " : ");
-            code = scan.nextLine();
-            System.out.print("Enter course of publication " + count + " : ");
-            course = scan.nextLine();
-            scan.nextLine();
-
-       
-            m = new Employee(name, code, course);
-
-          
-            list.add(m);
-        
-        }
+        catch(InputMismatchException e) {
+        	System.out.println("Invalid input.Please Enter an integer.");
+        	scan.next();
         }
     }
-    
+        
+        
+        
+            for (int count = 1; count <= n; count++) {
+            	
+                System.out.print("\nEnter name of the Employee " + count + " : ");
+                 name = scan.nextLine();
+  
+                System.out.print("\nEnter Employee code for " + count + " : ");
+                 code = scan.nextLine();
+
+                while (true) {
+                    System.out.print("Enter course (must start with 'Food'): ");
+                    course = scan.nextLine();
+                    if (course.startsWith("Food")) {
+                        break;
+                    } else {
+                        System.out.println("Error: Course must start with 'Food'. Please try again.");
+                    }
+                }
+                
+                System.out.print("Enter the years of experince " + count + " : ");
+                int years = scan.nextInt();
+                scan.nextLine(); 
+
+                // Create and add the Employee object
+                m = new Employee(name, code, course, years);
+                list.add(m);
+            
+        
+        
+        }
+        }
+   
     public void Menu(){
-   	 System.out.println("D) Display books");
-        System.out.println("Search an employee");
-        System.out.println("S) Search for employee");
-        System.out.println("Q) Quit");
-        System.out.println("Q) Quit");
-        System.out.println("Q) Quit");
-        System.out.println("Q) Quit");
+    	System.out.println("d) Display");
+        System.out.println("s) Search for employee");
+        System.out.println("r) Remove employee by number");
+        System.out.println("c) Search by course");
+        System.out.println("x) Delete by course");
+        System.out.println("e) Add employees");
+        System.out.println("v) Reverse the list"); 
+        System.out.println("q) Quit");
         
         
         
@@ -79,21 +102,25 @@ public class TrainingCourses
         do {
             options = scan.nextLine();
             switch (options) {
-                case "D":
+                case "d":
                	 displayModules();
                     break;
-                case "R":
+                case "r":
                	 removeFirstModule();
-                case "S":
+                case "s":
                	 searchModule();
-                case "A":
+                case "a":
                     removeFirstModule();
-                case "C":
+                case "c":
                     searchCourse();
-                case "X":
+                case "x":
                     deleteByCourse();
-                case "E":
+                case "e":
+                	AddEmployees();
+                case "t":
                 	searchEmployees();
+                case "v":
+                	reverseList();
                 case "Q":
                     System.out.println("Exiting the program...");
                	 
@@ -114,9 +141,9 @@ public class TrainingCourses
 
     public void removeFirstModule() {
     	Scanner scan = new Scanner(System.in);
-        System.out.println("\nEnter the module code to search:");
+        System.out.println("\nEnter the employee code to search:");
         String code = scan.nextLine();
-        System.out.println("\nLooking for the module...");
+        System.out.println("\nLooking for the employee...");
 
         boolean found = false;
         LinearNode<Employee> current = list.getFront();
@@ -126,7 +153,7 @@ public class TrainingCourses
             Employee m = current.getElement();
             if (m.getCode().equalsIgnoreCase(code)) {
                 found = true;
-                System.out.println("\nModule " + m.getCode() + " has been found.");
+                System.out.println("\nEmployee " + m.getCode() + " has been found.");
                 
               
                 if (previous == null) {
@@ -201,16 +228,20 @@ public class TrainingCourses
         System.out.println("\nEnter course:");
         String course = scan.nextLine();
 
+        if (!course.startsWith("Food")) {
+            System.out.println("Error: Course must start with 'Food'.");
+            Menu();
+            return;
+        }
+
         System.out.println("\nLooking for course...");
 
         boolean found = false;
         LinearNode<Employee> current = list.getFront();
 
-       
         while (current != null) {
             Employee m = current.getElement();
 
-            // Check if the course matches
             if (m.getCourse().equalsIgnoreCase(course)) {
                 if (!found) {
                     System.out.println("\nCourse \"" + course + "\" has been found. Employees on this course:");
@@ -222,12 +253,11 @@ public class TrainingCourses
             current = current.getNext();
         }
 
-       
         if (!found) {
             System.out.println("\nCourse \"" + course + "\" has not been found.");
         }
 
-        Menu(); 
+        Menu();
     }
     
     
@@ -253,11 +283,24 @@ public class TrainingCourses
             System.out.println("No employees found on course \"" + course + "\".");
         }
     }
+    
+    public void reverseList() {
+        System.out.println("\nReversing the list...");
+        list.reverse();
+        System.out.println("The list has been reversed.");
+        displayModules();
+    }
 
     public void deleteByCourse() {
         Scanner scan = new Scanner(System.in);
         System.out.print("\nEnter course name to delete all employees: ");
         String course = scan.nextLine();
+
+        if (!course.startsWith("Food")) {
+            System.out.println("Error: Course must start with 'Food'.");
+            displayModules();
+            return;
+        }
 
         LinearNode<Employee> current = list.getFront();
         LinearNode<Employee> previous = null;
@@ -291,8 +334,41 @@ public class TrainingCourses
         displayModules();
     }
 
-    
-    
+    public void AddEmployees() {
+        Scanner scan = new Scanner(System.in);
+
+        System.out.println("\nEnter employee name:");
+        String name = scan.nextLine();
+        System.out.println("Enter employee code:");
+        String code = scan.nextLine();
+        System.out.println("years of experinece here:");
+        int years = scan.nextInt();
+
+        String course = ""; 
+        while (true) {
+            System.out.print("Enter course (must start with 'Food'): ");
+            course = scan.nextLine(); 
+            if (course.startsWith("Food")) {
+                break; 
+            } else {
+                System.out.println("Error: Course must start with 'Food'. Please try again.");
+            }
+        }
+
+        Employee newEmployee = new Employee(name, code, course, years); 
+        System.out.println("Enter position to add the employee (0 for the start, " + list.size() + " for the end):");
+        int position = scan.nextInt();
+
+        try {
+            list.addAt(position, newEmployee);
+            System.out.println("Employee added successfully.");
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Invalid position. Employee not added.");
+        }
+
+        Menu();
+    }
+
     public static void main(String[] args)
     {
         new TrainingCourses();
