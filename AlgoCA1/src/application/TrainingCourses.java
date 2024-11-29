@@ -76,7 +76,7 @@ public class TrainingCourses
                 int years = scan.nextInt();
                 scan.nextLine(); 
 
-                // Create and add the Employee object
+             
                 m = new Employee(name, code, course, years);
                 list.add(m);
             
